@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Message } from '../types';
 import MessageComponent from './Message';
 import InputBox from './InputBox';
-// import { fetch } from '@tauri-apps/plugin-http';
+import { fetch } from '@tauri-apps/plugin-http';
 
 const ChatWindow: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -41,10 +41,8 @@ const ChatWindow: React.FC = () => {
 
     try {
       const response = await fetch('http://127.0.0.1:11434/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        method: 'post',
+        mode: "cors",
         body: JSON.stringify({
           model: 'qwen2.5:0.5b',
           messages: [
@@ -53,6 +51,7 @@ const ChatWindow: React.FC = () => {
               content: content,
             },
           ],
+          stream: false,
         }),
       });
 
